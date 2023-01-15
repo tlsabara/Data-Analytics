@@ -8,6 +8,12 @@ import random
 
 class InterfaceCrawler(ABC):
     ACCEPTED_KWARGS = []
+    __ansi_color = (
+        "\033[0m",   # End of color
+        "\033[36m",  # Cyan
+        "\033[91m",  # Red
+        "\033[35m",  # Magenta
+    )
 
     def __new__(cls, *args, **kwargs) -> object:
         invalid = [1 if k not in cls.ACCEPTED_KWARGS else 0 for k in kwargs]
@@ -179,7 +185,8 @@ class InterfaceCrawler(ABC):
         ...
 
     def report(self):
-        return "\033[91m" + f'- CRAWLER REPORT - - - - - - - - - -\n' \
+        ix = random.randint(0, len(self.__ansi_color)-1)
+        return self.__ansi_color[ix] + f'- CRAWLER REPORT - - - - - - - - - -\n' \
                f'> Crowler class:{self.__class__.__name__}\n' \
                f'> Execution Time: {self.duration}\n' \
                f'- - - - - - - - - - - - - - - - - - '
@@ -232,7 +239,7 @@ if __name__ == '__main__':
         async def _async_mount(self) -> None:
             etl_mode = 'load'
 
-            for n in range(500):
+            for n in range(5000):
                 await self._async_add_task(
                     self._async_chain, etl_mode=etl_mode, n=n
                 )
